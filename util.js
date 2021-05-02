@@ -1,8 +1,3 @@
-function didMouseClick(x, y, w, h) //simple function to do hit testing
-{
-  return (mouseX > x && mouseX<x+w && mouseY>y && mouseY<y+h); //check to see if it is in button bounds
-}
-
 //=========SHOULD NOT NEED TO TOUCH THIS METHOD AT ALL!==============
 function computeLevenshteinDistance (phrase1, phrase2) //this computers error between two strings
 {

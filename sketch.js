@@ -28,7 +28,7 @@ function setup() {
   phrases[r] = temp;
    }
 
-  setupButtons()
+  setupNextButton()
   setupFirstScreen()
   setupSecondScreen()
   console.log('testing setup entry')
@@ -86,7 +86,7 @@ function draw() {
     text("Target:   " + currentPhrase, 70, 100); //draw the target string
     text("Entered:  " + currentTyped + "|", 70, 140); //draw what the user has entered thus far 
 
-    updateButtons()
+    showWatch()
   }
 }
 

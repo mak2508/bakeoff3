@@ -9,16 +9,18 @@ const letterGroups = [group1, group2, group3, group4, group5, group6]
 
 const firstScreenButtons = []
 const secondScreenButtons = []
-const verticallyLong = true
+const verticallyLong = false
 
 // initial screen
 function setupFirstScreen() {
   for (i=0; i<6; i++) {
-    const button = createButton(''.join(letterGroups[i]))
-    button.mousePressed(() => enterSecondScreen(letterGroups[i]))
+    const button = createButton(letterGroups[i].join(''))
+    console.log(letterGroups[i])
+    button.mousePressed(() => enterSecondScreen([...button.html()]))
+    button.hide()
     firstScreenButtons.push(button)
   }
-  setButtonPositions(firstScreenButtons, true)
+  setButtonPositions(firstScreenButtons, verticallyLong)
 }
 
 // screen with letter input buttons
@@ -33,7 +35,7 @@ function setupSecondScreen() {
   secondScreenButtons[5].html('back')
 
   // set size and positions
-  setButtonPositions(secondScreenButtons, true)
+  setButtonPositions(secondScreenButtons, verticallyLong)
 }
 
 function enterSecondScreen(letters) {
@@ -78,28 +80,7 @@ function setButtonPositions(buttons, verticallyLong=true) {
   }
 }
 
-function setupButtons() {
-  //my draw code that you should replace.
-  leftButton = createButton('<=')
-  leftButton.size(sizeOfInputArea/2, sizeOfInputArea/2)
-  leftButton.position(width/2-sizeOfInputArea/2, height/2)
-  leftButton.style('background-color', 'rgb(255,0,0)')
-  leftButton.mousePressed(leftButtonHandler)
-  leftButton.hide()
-
-  rightButton = createButton('=>')
-  rightButton.size(sizeOfInputArea/2, sizeOfInputArea/2)
-  rightButton.position(width/2, height/2)
-  rightButton.style('background-color', 'rgb(0,255,0)')
-  rightButton.mousePressed(() => enterSecondScreen(group1))
-  rightButton.hide()
-  
-  textButton = createButton(String.fromCharCode(currentLetter))
-  textButton.size(sizeOfInputArea, sizeOfInputArea/2)
-  textButton.position(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2)
-  textButton.mousePressed(() => letterButtonHandler(textButton.html()))
-  textButton.hide()
-
+function setupNextButton() {
   nextButton = createButton('NEXT >')
   nextButton.size(200, 200)
   nextButton.position(600,600)
@@ -108,36 +89,11 @@ function setupButtons() {
   nextButton.hide()
 }
 
-function updateButtons() {
-  leftButton.show()
-  rightButton.show()
-  textButton.show()
-  textButton.html(String.fromCharCode(currentLetter))
+function showWatch() {
   nextButton.show()
-}
-
-// Button Handlers
-function textButtonHandler () {
-  if (currentLetter=='_'.charCodeAt()) //if underscore, consider that a space bar
-    currentTyped = currentTyped + " ";
-  else if (currentLetter=='`'.charCodeAt() & currentTyped.length>0) //if `, treat that as a delete command
-    currentTyped = currentTyped.substring(0, currentTyped.length-1);
-  else if (currentLetter!='`'.charCodeAt()) //if not any of the above cases, add the current letter to the typed string
-    currentTyped = currentTyped + String.fromCharCode(currentLetter);
-}
-
-function leftButtonHandler () {
-  if (currentLetter<=95) //wrap around to z
-    currentLetter = 'z'.charCodeAt();
-  else
-  currentLetter--;
-}
-
-function rightButtonHandler () {
-  if (currentLetter>=122) //wrap back to space (aka underscore)
-      currentLetter = '_'.charCodeAt();
-  else
-  currentLetter++;
+  for (i=0; i<6; i++) {
+    firstScreenButtons[i].show()
+  }
 }
 
 function nextButtonHandler() {
