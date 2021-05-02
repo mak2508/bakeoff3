@@ -11,12 +11,16 @@ const firstScreenButtons = []
 const secondScreenButtons = []
 const verticallyLong = false
 
+let nextButton;
+
+// -- Button Setup --
 // initial screen
 function setupFirstScreen() {
   for (i=0; i<6; i++) {
-    const button = createButton(letterGroups[i].join(''))
-    button.mousePressed(() => enterSecondScreen([...button.html()]))
-    button.hide()
+    const button = new Button({
+      text: letterGroups[i].join(''),
+      callback: () => enterSecondScreen([...button.text])
+    })
     firstScreenButtons.push(button)
   }
   setButtonPositions(firstScreenButtons, verticallyLong)
@@ -25,26 +29,41 @@ function setupFirstScreen() {
 // screen with letter input buttons
 function setupSecondScreen() {
   for (i=0; i<6; i++) {
-    const button = createButton('')
-    button.mousePressed(() => letterButtonHandler(button.html()))
-    button.hide()
+    const button = new Button({ 
+      text: '',
+      callback: () => letterButtonHandler(button.text)
+    })
     secondScreenButtons.push(button)
   }
   // set up back button
-  secondScreenButtons[5].html('back')
+  secondScreenButtons[5].updateText('back')
 
   // set size and positions
   setButtonPositions(secondScreenButtons, verticallyLong)
 }
 
+function setupNextButton() {
+  nextButton = new Button({
+    text: 'NEXT >',
+    size: [200, 200],
+    position: [600,600],
+    color: [255, 0, 0],
+    callback: nextButtonHandler
+  })
+}
+
+// -- Button state change --
 function enterSecondScreen(letters) {
   for (i=0; i<letters.length; i++) {
-    secondScreenButtons[i].html(letters[i])
+    secondScreenButtons[i].updateText(letters[i])
     secondScreenButtons[i].show()
+  }
+  for (i=0; i<6; i++) {
+    firstScreenButtons[i].hide()
   }
   // group6 case
   for (i=letters.length; i<5; i++) {
-    secondScreenButtons[i].html('')
+    secondScreenButtons[i].updateText('')
     secondScreenButtons[i].show()
   }
   secondScreenButtons[5].show() // back button
@@ -53,48 +72,22 @@ function enterSecondScreen(letters) {
 function exitSecondScreen() {
   for (i=0; i<6; i++) {
     secondScreenButtons[i].hide()
-  }
-  for (i=0; i<6; i++) {
     firstScreenButtons[i].show()
   }
 }
 
-function setButtonPositions(buttons, verticallyLong=true) {
-  if (verticallyLong) {
-    // vertically long
-    buttons.forEach(button => button.size(sizeOfInputArea/3, sizeOfInputArea/2))
-    buttons[0].position(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2)
-    buttons[1].position(width/2-sizeOfInputArea/6, height/2-sizeOfInputArea/2)
-    buttons[2].position(width/2+sizeOfInputArea/6, height/2-sizeOfInputArea/2)
-    buttons[3].position(width/2-sizeOfInputArea/2, height/2)
-    buttons[4].position(width/2-sizeOfInputArea/6, height/2)
-    buttons[5].position(width/2+sizeOfInputArea/6, height/2)
-  } else {
-    // horizontally long
-    buttons.forEach(button => button.size(sizeOfInputArea/2, sizeOfInputArea/3))
-    buttons[0].position(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2)
-    buttons[1].position(width/2, height/2-sizeOfInputArea/2)
-    buttons[2].position(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/6)
-    buttons[3].position(width/2, height/2-sizeOfInputArea/6)
-    buttons[4].position(width/2-sizeOfInputArea/2, height/2+sizeOfInputArea/6)
-    buttons[5].position(width/2, height/2+sizeOfInputArea/6)
-  }
-}
-
-function setupNextButton() {
-  nextButton = createButton('NEXT >')
-  nextButton.size(200, 200)
-  nextButton.position(600,600)
-  nextButton.style('background-color', 'rgb(255,0,0)')
-  nextButton.mousePressed(nextButtonHandler)
-  nextButton.hide()
-}
-
+// -- Trial Stage Change --
 function showWatch() {
   nextButton.show()
   for (i=0; i<6; i++) {
     firstScreenButtons[i].show()
   }
+}
+
+function drawWatch() {
+  nextButton.draw()
+  firstScreenButtons.forEach(button => button.draw())
+  secondScreenButtons.forEach(button => button.draw())
 }
 
 function hideWatch() {
@@ -105,6 +98,7 @@ function hideWatch() {
   nextButton.hide()
 }
 
+// -- Handlers --
 function nextButtonHandler() {
   nextTrial(); //if so, advance to next trial
 }
@@ -123,4 +117,27 @@ function letterButtonHandler(letter) {
   else if (letter!='`') //if not any of the above cases, add the current letter to the typed string
     currentTyped = currentTyped + letter;
   exitSecondScreen()
+}
+
+// -- Utility --
+function setButtonPositions(buttons, verticallyLong=true) {
+  if (verticallyLong) {
+    // vertically long
+    buttons.forEach(button => button.updateSize(sizeOfInputArea/3, sizeOfInputArea/2))
+    buttons[0].updatePosition(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2)
+    buttons[1].updatePosition(width/2-sizeOfInputArea/6, height/2-sizeOfInputArea/2)
+    buttons[2].updatePosition(width/2+sizeOfInputArea/6, height/2-sizeOfInputArea/2)
+    buttons[3].updatePosition(width/2-sizeOfInputArea/2, height/2)
+    buttons[4].updatePosition(width/2-sizeOfInputArea/6, height/2)
+    buttons[5].updatePosition(width/2+sizeOfInputArea/6, height/2)
+  } else {
+    // horizontally long
+    buttons.forEach(button => button.updateSize(sizeOfInputArea/2, sizeOfInputArea/3))
+    buttons[0].updatePosition(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2)
+    buttons[1].updatePosition(width/2, height/2-sizeOfInputArea/2)
+    buttons[2].updatePosition(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/6)
+    buttons[3].updatePosition(width/2, height/2-sizeOfInputArea/6)
+    buttons[4].updatePosition(width/2-sizeOfInputArea/2, height/2+sizeOfInputArea/6)
+    buttons[5].updatePosition(width/2, height/2+sizeOfInputArea/6)
+  }
 }

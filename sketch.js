@@ -71,6 +71,7 @@ function draw() {
   if (startTime==0 & mouseIsPressed)
   {
     nextTrial(); //start the trials!
+    showWatch()
   }
 
   //draw 1" watch area
@@ -88,8 +89,13 @@ function draw() {
     text("Target:   " + currentPhrase, 70, 100); //draw the target string
     text("Entered:  " + currentTyped + "_", 70, 140); //draw what the user has entered thus far 
 
-    showWatch()
+    drawWatch()
   }
+}
+
+function mousePressed() {
+  console.log('pressed')
+  Button.checkButtonPress()
 }
 
 function nextTrial()
