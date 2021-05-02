@@ -15,7 +15,6 @@ const verticallyLong = false
 function setupFirstScreen() {
   for (i=0; i<6; i++) {
     const button = createButton(letterGroups[i].join(''))
-    console.log(letterGroups[i])
     button.mousePressed(() => enterSecondScreen([...button.html()]))
     button.hide()
     firstScreenButtons.push(button)
@@ -39,11 +38,13 @@ function setupSecondScreen() {
 }
 
 function enterSecondScreen(letters) {
-  for (i=0; i<6; i++) {
-    firstScreenButtons[i].hide()
-  }
   for (i=0; i<letters.length; i++) {
     secondScreenButtons[i].html(letters[i])
+    secondScreenButtons[i].show()
+  }
+  // group6 case
+  for (i=letters.length; i<5; i++) {
+    secondScreenButtons[i].html('')
     secondScreenButtons[i].show()
   }
   secondScreenButtons[5].show() // back button
@@ -96,17 +97,30 @@ function showWatch() {
   }
 }
 
+function hideWatch() {
+  for (i=0; i<6; i++) {
+    firstScreenButtons[i].hide()
+    secondScreenButtons[i].hide()
+  }
+  nextButton.hide()
+}
+
 function nextButtonHandler() {
   nextTrial(); //if so, advance to next trial
 }
 
 function letterButtonHandler(letter) {
-  if (letter=='back')
-    exitSecondScreen();
+  if (letter=='')
+    return
+  else if (letter=='back')
+    exitSecondScreen()
   else if (letter=='_') //if underscore, consider that a space bar
     currentTyped = currentTyped + " ";
-  else if (letter=='`' & currentTyped.length>0) //if `, treat that as a delete command
+  else if (letter=='`' & currentTyped.length>0) {//if `, treat that as a delete command
     currentTyped = currentTyped.substring(0, currentTyped.length-1);
+    return;
+  }
   else if (letter!='`') //if not any of the above cases, add the current letter to the typed string
     currentTyped = currentTyped + letter;
+  exitSecondScreen()
 }

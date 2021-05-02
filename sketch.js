@@ -40,6 +40,8 @@ function draw() {
   //check to see if the user finished. You can't change the score computation.
   if (finishTime!=0)
   {
+    hideWatch()
+    
     fill(0);
     textAlign(CENTER);
     text("Trials complete!",400,200); //output
@@ -84,7 +86,7 @@ function draw() {
     text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 70, 50); //draw the trial count
     fill(128);
     text("Target:   " + currentPhrase, 70, 100); //draw the target string
-    text("Entered:  " + currentTyped + "|", 70, 140); //draw what the user has entered thus far 
+    text("Entered:  " + currentTyped + "_", 70, 140); //draw what the user has entered thus far 
 
     showWatch()
   }
