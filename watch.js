@@ -45,8 +45,8 @@ function setupSecondScreen() {
 function setupNextButton() {
   nextButton = new Button({
     text: 'NEXT >',
-    size: [200, 200],
-    position: [600,600],
+    size: [100, 100],
+    position: [width*3/4-100,height*3/4],
     color: [255, 0, 0],
     callback: nextButtonHandler
   })

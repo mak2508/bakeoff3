@@ -16,7 +16,7 @@ let currentTyped = ""; //what the user has typed so far
 let currentLetter = 'a'.charCodeAt();
 
 function setup() {
-  createCanvas(800, 800); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
+  createCanvas(600, 600); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
   noStroke(); //my code doesn't use any strokes.
   
   //randomize the phrase order
