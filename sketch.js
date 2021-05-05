@@ -65,6 +65,7 @@ function draw() {
   {
     fill(128);
     textAlign(CENTER);
+    text("Site updated: v1.1", 280, 130);
     text("Click to start time!", 280, 150); //display this message until the user clicks!
   }
 
