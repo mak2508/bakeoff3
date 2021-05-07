@@ -94,6 +94,10 @@ function draw() {
   }
 }
 
+function touchMoved() {
+  return false
+}
+
 let leftSidePress = false
 let rightSidePress = false
 function mousePressed() {
