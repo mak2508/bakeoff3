@@ -107,10 +107,16 @@ function mousePressed() {
 
 function mouseReleased() {
   if (rightSidePress && mouseInLeftWatch()) {
-    console.log('left swipe')
+    if (inFirstScreen) {
+      letterButtonHandler('`') // Backspace
+    } else {
+      exitSecondScreen()
+    }
   }
   else if (leftSidePress && mouseInRightWatch()) {
-    console.log('right swipe')
+    if (inFirstScreen) {
+      letterButtonHandler('_') // Space
+    }
   }
   else {
     Button.checkButtonPress()

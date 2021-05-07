@@ -12,6 +12,8 @@ const secondScreenButtons = []
 
 let nextButton;
 
+let inFirstScreen = true
+
 // -- Button Setup --
 // initial screen
 function setupFirstScreen() {
@@ -66,6 +68,7 @@ function enterSecondScreen(letters) {
     secondScreenButtons[i].show()
   }
   secondScreenButtons[5].show() // back button
+  inFirstScreen = false
 }
 
 function exitSecondScreen() {
@@ -73,6 +76,7 @@ function exitSecondScreen() {
     secondScreenButtons[i].hide()
     firstScreenButtons[i].show()
   }
+  inFirstScreen = true
 }
 
 // -- Trial Stage Change --
