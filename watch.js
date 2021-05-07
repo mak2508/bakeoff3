@@ -128,3 +128,13 @@ function setButtonPositions(buttons) {
   buttons[4].updatePosition(width/2-sizeOfInputArea/2, height/2+sizeOfInputArea/6)
   buttons[5].updatePosition(width/2, height/2+sizeOfInputArea/6)
 }
+
+function mouseInLeftWatch() {
+  return didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2,
+                       sizeOfInputArea/2, sizeOfInputArea)
+}
+
+function mouseInRightWatch() {
+  return didMouseClick(width/2, height/2-sizeOfInputArea/2,
+                       sizeOfInputArea/2, sizeOfInputArea)
+}

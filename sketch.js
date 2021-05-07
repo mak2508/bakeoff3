@@ -94,9 +94,29 @@ function draw() {
   }
 }
 
+let leftSidePress = false
+let rightSidePress = false
 function mousePressed() {
-  console.log('pressed')
-  Button.checkButtonPress()
+  if (mouseInLeftWatch()) {
+    leftSidePress = true
+  }
+  if (mouseInRightWatch()) {
+    rightSidePress = true
+  }
+}
+
+function mouseReleased() {
+  if (rightSidePress && mouseInLeftWatch()) {
+    console.log('left swipe')
+  }
+  else if (leftSidePress && mouseInRightWatch()) {
+    console.log('right swipe')
+  }
+  else {
+    Button.checkButtonPress()
+  }
+  leftSidePress = false
+  rightSidePress = false
 }
 
 function nextTrial()
