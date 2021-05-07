@@ -113,13 +113,12 @@ function mouseReleased() {
   if (rightSidePress && mouseInLeftWatch()) {
     if (inFirstScreen) {
       letterButtonHandler('`') // Backspace
-    } else {
-      exitSecondScreen()
     }
-  }
   else if (leftSidePress && mouseInRightWatch()) {
     if (inFirstScreen) {
       letterButtonHandler('_') // Space
+    } else {
+      exitSecondScreen()
     }
   }
   else {
