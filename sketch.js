@@ -110,11 +110,12 @@ function mousePressed() {
 }
 
 function mouseReleased() {
-  if (rightSidePress && mouseInLeftWatch()) {
+  if (rightSidePress && mouseX < width/2) {
     if (inFirstScreen) {
       letterButtonHandler('`') // Backspace
     }
-  else if (leftSidePress && mouseInRightWatch()) {
+  }
+  else if (leftSidePress && mouseX > width/2) {
     if (inFirstScreen) {
       letterButtonHandler('_') // Space
     } else {
