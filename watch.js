@@ -9,7 +9,6 @@ const letterGroups = [group1, group2, group3, group4, group5, group6]
 
 const firstScreenButtons = []
 const secondScreenButtons = []
-const verticallyLong = false
 
 let nextButton;
 
@@ -23,7 +22,7 @@ function setupFirstScreen() {
     })
     firstScreenButtons.push(button)
   }
-  setButtonPositions(firstScreenButtons, verticallyLong)
+  setButtonPositions(firstScreenButtons)
 }
 
 // screen with letter input buttons
@@ -39,7 +38,7 @@ function setupSecondScreen() {
   secondScreenButtons[5].updateText('back')
 
   // set size and positions
-  setButtonPositions(secondScreenButtons, verticallyLong)
+  setButtonPositions(secondScreenButtons)
 }
 
 function setupNextButton() {
@@ -120,24 +119,12 @@ function letterButtonHandler(letter) {
 }
 
 // -- Utility --
-function setButtonPositions(buttons, verticallyLong=true) {
-  if (verticallyLong) {
-    // vertically long
-    buttons.forEach(button => button.updateSize(sizeOfInputArea/3, sizeOfInputArea/2))
-    buttons[0].updatePosition(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2)
-    buttons[1].updatePosition(width/2-sizeOfInputArea/6, height/2-sizeOfInputArea/2)
-    buttons[2].updatePosition(width/2+sizeOfInputArea/6, height/2-sizeOfInputArea/2)
-    buttons[3].updatePosition(width/2-sizeOfInputArea/2, height/2)
-    buttons[4].updatePosition(width/2-sizeOfInputArea/6, height/2)
-    buttons[5].updatePosition(width/2+sizeOfInputArea/6, height/2)
-  } else {
-    // horizontally long
-    buttons.forEach(button => button.updateSize(sizeOfInputArea/2, sizeOfInputArea/3))
-    buttons[0].updatePosition(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2)
-    buttons[1].updatePosition(width/2, height/2-sizeOfInputArea/2)
-    buttons[2].updatePosition(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/6)
-    buttons[3].updatePosition(width/2, height/2-sizeOfInputArea/6)
-    buttons[4].updatePosition(width/2-sizeOfInputArea/2, height/2+sizeOfInputArea/6)
-    buttons[5].updatePosition(width/2, height/2+sizeOfInputArea/6)
-  }
+function setButtonPositions(buttons) {
+  buttons.forEach(button => button.updateSize(sizeOfInputArea/2, sizeOfInputArea/3))
+  buttons[0].updatePosition(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2)
+  buttons[1].updatePosition(width/2, height/2-sizeOfInputArea/2)
+  buttons[2].updatePosition(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/6)
+  buttons[3].updatePosition(width/2, height/2-sizeOfInputArea/6)
+  buttons[4].updatePosition(width/2-sizeOfInputArea/2, height/2+sizeOfInputArea/6)
+  buttons[5].updatePosition(width/2, height/2+sizeOfInputArea/6)
 }
