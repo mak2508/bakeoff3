@@ -65,7 +65,7 @@ function draw() {
   {
     fill(128);
     textAlign(CENTER);
-    text("Site updated: v3.0", 200, 130);
+    text("Site updated: v3.1", 200, 130);
     text("Click to start time!", 200, 150); //display this message until the user clicks!
   }
 
@@ -109,7 +109,13 @@ function mousePressed() {
   }
 }
 
+let started = false // used to avoid registering first click
 function mouseReleased() {
+  if (!started) {
+    started = true
+    return
+  }
+
   if (rightSidePress && mouseX < width/2) {
     if (inFirstScreen) {
       letterButtonHandler('`') // Backspace
