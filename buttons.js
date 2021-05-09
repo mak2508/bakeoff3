@@ -35,7 +35,8 @@ class Button {
       noStroke()
       fill(50)
       textAlign(CENTER)
-      text(this.text, ...this._getTextPosition())
+      textFont('Helvetica', 13)
+      text(this.text.split('').join(' '), ...this._getTextPosition())
     }
   }
   mousePressed() {
@@ -49,7 +50,7 @@ class Button {
   }
   _getTextPosition() {
     return [this.position[0] + this.size[0]/2,
-            this.position[1] + this.size[1]/2]
+            this.position[1] + 4*this.size[1]/7]
   }
 }
 Button.instances = []
