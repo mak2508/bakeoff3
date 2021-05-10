@@ -46,8 +46,9 @@ function setup() {
   // code to set dpi
   input = createInput()
   input.position(20, height/2);
+  input.style('font-size', '18px')
   inputButton = createButton('submit');
-  inputButton.position(input.x + input.width, height/2);
+  inputButton.position(input.x + input.width, height/2 + 50);
   inputButton.mousePressed(setDPI);
 
 }
@@ -85,7 +86,7 @@ function draw() {
     {
       fill(128);
       textAlign(CENTER);
-      text("Site updated: v3.2", 200, 130);
+      text("Site updated: v3.2.3", 200, 130);
       text("Click to start time!", 200, 150); //display this message until the user clicks!
     }
 
