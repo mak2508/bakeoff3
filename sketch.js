@@ -15,11 +15,11 @@ let currentTyped = ""; //what the user has typed so far
 //Variables for my silly implementation. You can delete this:
 let currentLetter = 'a'.charCodeAt();
 
-let dpiSet = false
+let dpiSet = 0
 function setDPI() {
   DPIofYourDeviceScreen = parseInt(input.value())
   sizeOfInputArea = DPIofYourDeviceScreen*1.0
-  dpiSet = true
+  dpiSet = 1
   input.hide()
   inputButton.hide()
 
@@ -54,7 +54,9 @@ function setup() {
 
 function draw() {
   background(255); //clear background
-  if (dpiSet) {
+  if (dpiSet != 0 && dpiSet < 10) {
+    dpiSet += 1
+  } else if (dpiSet >= 10) {
       //check to see if the user finished. You can't change the score computation.
     if (finishTime!=0)
     {
