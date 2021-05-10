@@ -1,5 +1,5 @@
-const DPIofYourDeviceScreen = 150; //you will need to measure or look up the DPI or PPI of your device/browser to make sure you get the right scale!!
-const sizeOfInputArea = DPIofYourDeviceScreen*1.0; //aka, 1.0 inches square!
+let DPIofYourDeviceScreen = 150; //you will need to measure or look up the DPI or PPI of your device/browser to make sure you get the right scale!!
+let sizeOfInputArea = DPIofYourDeviceScreen*1.0; //aka, 1.0 inches square!
 
 let totalTrialNum = 2; //the total number of phrases to be tested - set this low for testing. Might be ~10 for the real bakeoff!
 let currTrialNum = 0; // the current trial number (indexes into trials array above)
@@ -15,6 +15,19 @@ let currentTyped = ""; //what the user has typed so far
 //Variables for my silly implementation. You can delete this:
 let currentLetter = 'a'.charCodeAt();
 
+let dpiSet = false
+function setDPI() {
+  DPIofYourDeviceScreen = parseInt(input.value())
+  sizeOfInputArea = DPIofYourDeviceScreen*1.0
+  dpiSet = true
+  input.hide()
+  inputButton.hide()
+
+  setupNextButton()
+  setupFirstScreen()
+  setupSecondScreen()
+}
+
 function setup() {
   createCanvas(400, 600); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
   noStroke(); //my code doesn't use any strokes.
@@ -28,69 +41,75 @@ function setup() {
   phrases[r] = temp;
    }
 
-  setupNextButton()
-  setupFirstScreen()
-  setupSecondScreen()
   console.log('testing setup entry')
+
+  // code to set dpi
+  input = createInput()
+  input.position(20, height/2);
+  inputButton = createButton('submit');
+  inputButton.position(input.x + input.width, height/2);
+  inputButton.mousePressed(setDPI);
+
 }
 
 function draw() {
   background(255); //clear background
+  if (dpiSet) {
+      //check to see if the user finished. You can't change the score computation.
+    if (finishTime!=0)
+    {
+      hideWatch()
+      
+      fill(0);
+      textAlign(CENTER);
+      text("Trials complete!",150,200); //output
+      text("Total time taken: " + (finishTime - startTime),150,220); //output
+      text("Total letters entered: " + lettersEnteredTotal,150,240); //output
+      text("Total letters expected: " + lettersExpectedTotal,150,260); //output
+      text("Total errors entered: " + errorsTotal,150,280); //output
+      wpm = (lettersEnteredTotal/5)/((finishTime - startTime)/60000); //FYI - 60K is number of milliseconds in minute
+      text("Raw WPM: " + wpm,150,300); //output
+      freebieErrors = lettersExpectedTotal*.05; //no penalty if errors are under 5% of chars
+      text("Freebie errors: " + nf(freebieErrors,1,3),150,320); //output
+      penalty = max(errorsTotal-freebieErrors, 0) * 0.5;
+      text("Penalty: " + penalty,150,340);
+      text("WPM w/ penalty: " + (wpm-penalty),150,360); //yes, minus, because higher WPM is better
 
-  //check to see if the user finished. You can't change the score computation.
-  if (finishTime!=0)
-  {
-    hideWatch()
-    
-    fill(0);
-    textAlign(CENTER);
-    text("Trials complete!",150,200); //output
-    text("Total time taken: " + (finishTime - startTime),150,220); //output
-    text("Total letters entered: " + lettersEnteredTotal,150,240); //output
-    text("Total letters expected: " + lettersExpectedTotal,150,260); //output
-    text("Total errors entered: " + errorsTotal,150,280); //output
-    wpm = (lettersEnteredTotal/5)/((finishTime - startTime)/60000); //FYI - 60K is number of milliseconds in minute
-    text("Raw WPM: " + wpm,150,300); //output
-    freebieErrors = lettersExpectedTotal*.05; //no penalty if errors are under 5% of chars
-    text("Freebie errors: " + nf(freebieErrors,1,3),150,320); //output
-    penalty = max(errorsTotal-freebieErrors, 0) * 0.5;
-    text("Penalty: " + penalty,150,340);
-    text("WPM w/ penalty: " + (wpm-penalty),150,360); //yes, minus, because higher WPM is better
+      return;
+    }
 
-    return;
-  }
+    //check to see if the user hasn't started yet
+    if (startTime==0 && !mouseIsPressed)
+    {
+      fill(128);
+      textAlign(CENTER);
+      text("Site updated: v3.2", 200, 130);
+      text("Click to start time!", 200, 150); //display this message until the user clicks!
+    }
 
-  //check to see if the user hasn't started yet
-  if (startTime==0 & !mouseIsPressed)
-  {
-    fill(128);
-    textAlign(CENTER);
-    text("Site updated: v3.1", 200, 130);
-    text("Click to start time!", 200, 150); //display this message until the user clicks!
-  }
+    if (startTime==0 && mouseIsPressed)
+    {
+      nextTrial(); //start the trials!
+      showWatch()
+    }
 
-  if (startTime==0 & mouseIsPressed)
-  {
-    nextTrial(); //start the trials!
-    showWatch()
-  }
+    //draw 1" watch area
+    fill(100);
+    rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
 
-  //draw 1" watch area
-  fill(100);
-  rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
+    //if start time does not equal zero, it means we must be in the trials
+    if (startTime!=0)
+    {
+      //you can very slightly adjust the position of the target/entered phrases and next button
+      textAlign(LEFT); //align the text left
+      fill(128);
+      text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 70, 50); //draw the trial count
+      fill(128);
+      text("Target:   " + currentPhrase, 70, 100); //draw the target string
+      text("Entered:  " + currentTyped + "_", 70, 140); //draw what the user has entered thus far 
 
-  //if start time does not equal zero, it means we must be in the trials
-  if (startTime!=0)
-  {
-    //you can very slightly adjust the position of the target/entered phrases and next button
-    textAlign(LEFT); //align the text left
-    fill(128);
-    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 70, 50); //draw the trial count
-    fill(128);
-    text("Target:   " + currentPhrase, 70, 100); //draw the target string
-    text("Entered:  " + currentTyped + "_", 70, 140); //draw what the user has entered thus far 
-
-    drawWatch()
+      drawWatch()
+    }
   }
 }
 
